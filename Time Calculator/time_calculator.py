@@ -1,7 +1,16 @@
-#code works well with "11:59 AM", "2:32"
-#code works well with "12:00 PM", "12:00" -> prints: 12:00 AM.
+#**Time & date is correct in FCC's example 1. I had to test with a day. The day was not incremented.
+#Complete FAIL in example 2.
+#FCC example 3 - Complete FAIL similar to above, seems it has an issue with AM->PM
+#**Pass in example 4.
+#**Date and time correct in example 5.
+#**Date and time correct in example 6.
+
+#AM to PM seems to be the issue.
+
+
 import re
-start = ("11:43 PM", "24:20", "Sunday")
+#start = ("11:43 PM", "24:20", "Sunday")
+start = ("11:43 PM", "24:20", "Tuesday")
 #new_hour = ''
 #new_hour_test = ''
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -27,7 +36,8 @@ def add_time():
     input_day = start[2]
     #print(input_day)
 
-    index = week_days.index(input_day)
+    index = week_days.index(input_day) #index version of weekdays
+    #print("This is index: " + str(index))
     day_count = 0
 
 
@@ -38,6 +48,7 @@ def add_time():
 ########################################################### -> returns start_hour and new_hour in 24hrs
 
             days_hours = divmod(new_hour, 24)
+            #print(days_hours)
 
             new_hour = days_hours[1]
             #new_day = input_day <- I don't think this is necessary
@@ -45,6 +56,7 @@ def add_time():
             day_count = day_count + days_hours[0]
             i = index
             j = i + day_count
+            #print(j)
             if i <= j:
                 i = j
                 if i >= j:
@@ -53,7 +65,7 @@ def add_time():
 ######################################################## -> returns the current day, and hour.
             #new minutes
             new_min = int(start_min) + int(dur_minutes)
-            if new_min >=60:
+            if new_min >=60: #Should this be 59 instead? Because at 60, is when we increment an hour/minute/second.
                 new_hour = new_hour + 1
                 new_min = new_min - 60
 ######################################################## -> returns new minutes
@@ -115,4 +127,3 @@ add_time()
     #- incrementing hour when minutes > 60
     #- the condition that allows me to go beyond the end of list.
     #- method used to grab day and hours
-    #-
