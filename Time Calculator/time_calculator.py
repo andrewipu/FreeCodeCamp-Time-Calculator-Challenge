@@ -27,7 +27,7 @@ import re
 #start = ("11:59 PM", "24:05", "Wednesday") ##WRONG AM/PM -> Displaying PM instead of AM. ->from Unit Tests.
 #start = ("8:16 PM", "466:02", "Tuesday") #Fails Completely ->from Unit Tests. 
 
-start = ("3:00 PM", "3:10", "Sunday")
+start = ("8:16 PM", "466:02", "Tuesday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 def add_time():
@@ -59,8 +59,7 @@ def add_time():
 
         #add 12 if it is in PM format
     if AM_PM == 'PM':
-            #start_hour = int(start_hour) + 12 #Not necessary -> I will assume start_hour is in 24hr up til 24. After 24, I will need to subtract 24 from start_hour.
-            start_hour = int(start_hour)
+            start_hour = int(start_hour) + 12 #I am adding 12(hrs) to convert start_hour to 24hr clock system.
             new_hour = int(start_hour) + int(dur_hours)
 
 ########################################################### -> returns start_hour and new_hour in 24hrs
@@ -68,8 +67,7 @@ def add_time():
             days_hours = divmod(new_hour, 24)
             #print(days_hours)
 
-            new_hour = days_hours[1]
-            #new_day = input_day <- I don't think this is necessary
+            new_hour = days_hours[1] #Assuming this is in 24hrs.
 
             day_count = day_count + days_hours[0]
             i = index
@@ -86,46 +84,35 @@ def add_time():
             if new_min >=60: #Should this be 59 instead? Because at 60, is when we increment an hour/minute/second.
                 new_hour = new_hour + 1
                 new_min = new_min - 60
+                if new_hour >= 24:
+                    new_day = week_days[i + 1]
 ######################################################## -> returns new minutes
-            if new_hour >= 24:
-                #get days and hours
-                days_hours = divmod(new_hour, 24) #-> should give a tuple pair
-                day_count = day_count + days_hours[0]
-                i = index
-                j = i + day_count
-                if i <= j:
-                    i = j
-                    if i >= j:
-                        i = i - len(week_days)
-                new_day = week_days[i]
-                #new_hour = days_hours[1] 
-                
-######################################################## -> returns the current day, and hour on condition that new_hour is > 24.
+
     if AM_PM == 'AM':
         new_hour = int(start_hour) + int(dur_hours)
         new_min = int(start_min) + int(dur_minutes)
          
-    if new_min >=60:
-        new_hour = new_hour + 1
-        #print(new_hour)
-        new_min = new_min - 60
-            
-    #get the day
-    if new_hour >= 12:
-        new_hour = new_hour
-    else:
-        new_hour = new_hour + 12 #convert the new hour to 24hrs to calculate the date
-        days_hours = divmod(new_hour, 24)
-        day_count = day_count + days_hours[0]
+        if new_min >=60:
+            new_hour = new_hour + 1
+            #print(new_hour)
+            new_min = new_min - 60
+                
+        #get the day
+        if new_hour >= 12:
+            new_hour = new_hour
+        else:
+            new_hour = new_hour + 12 #convert the new hour to 24hrs to calculate the date
+            days_hours = divmod(new_hour, 24)
+            day_count = day_count + days_hours[0]
 
-        i = index
-        j = i + day_count
-        #print(j)
-        if i <= j:
-            i = j
-            if i >= j:
-                i = i - len(week_days)
-        new_day = week_days[i]
+            i = index
+            j = i + day_count
+            #print(j)
+            if i <= j:
+                i = j
+                if i >= j:
+                    i = i - len(week_days)
+            new_day = week_days[i]
 
 ######################################################## -> returns the current hour and minutes when set to AM
             
@@ -136,7 +123,20 @@ def add_time():
         new_min = "0" + str(new_min)
     else:
         new_min = str(new_min)
-    
+        
+
+    #check and assign the appropriate period (AM or PM)
+    if new_hour >= 0 :
+        if new_hour < 12:
+            period = 'AM'
+
+    if new_hour >= 12 :
+        if new_hour <= 23 :
+            period = 'PM'
+
+    if new_hour >= 24 :
+        period = 'AM'
+
 
     #check if time is in 24hrs and convert to 12hrs
     if new_hour > 12:
@@ -144,22 +144,6 @@ def add_time():
 
     elif new_hour <=12:
         new_hour=new_hour
-
-    #check and assign the appropriate period (AM or PM)
-    if new_hour >= 0 :
-        if new_hour < 12:
-            period = 'AM'
-    if new_hour >= 12 :
-        if new_hour <= 24 :
-            period = 'PM'
-
-
-    #check if time is in 24hrs and convert to 12hrs
-    #if new_hour > 12:
-        #new_hour=new_hour-12
-
-    #elif new_hour <=12:
-        #new_hour=new_hour
 
     
     new_hour = str(new_hour)
