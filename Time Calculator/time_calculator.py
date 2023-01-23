@@ -1,16 +1,14 @@
-#**Time & date is correct in FCC's example 1. I had to test with a day. The day was not incremented.
-#Complete FAIL in example 2.
-#FCC example 3 - Complete FAIL similar to above, seems it has an issue with AM->PM
-#**Pass in example 4.
-#**Date and time correct in example 5.
-#**Date and time correct in example 6.
-
-#AM to PM seems to be the issue.
+#All tests in FCC's website pass.
 
 
 import re
-#start = ("11:43 PM", "24:20", "Sunday")
-start = ("11:43 PM", "24:20", "Tuesday")
+#start = ("2:59 AM", "24:00", "Monday") #Fails  completely ->from Unit Tests.
+#start = ("8:16 PM", "466:02", "Monday") #Fails completely ->from Unit Tests.
+#start = ("5:01 AM", "0:00", "Monday") #Fails Completely ->from Unit Tests.
+#start = ("2:59 AM", "24:00", "saturDay") #Fails Completely ->from Unit Tests.
+#start = ("11:59 PM", "24:05", "Wednesday") ##WRONG AM/PM -> Displaying PM instead of AM. ->from Unit Tests.
+#start = ("8:16 PM", "466:02", "Tuesday") #Fails Completely ->from Unit Tests. 
+start = ("2:59 AM", "24:00", "Tuesday")
 #new_hour = ''
 #new_hour_test = ''
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -80,14 +78,35 @@ def add_time():
                     if i >= j:
                         i = i - len(week_days)
                 new_day = week_days[i]
-                new_hour = days_hours[1]
+                #new_hour = days_hours[1] 
+                
 ######################################################## -> returns the current day, and hour on condition that new_hour is > 24.
     if AM_PM == 'AM':
         new_hour = int(start_hour) + int(dur_hours)
         new_min = int(start_min) + int(dur_minutes)
-        if new_min >=60:
-            new_hour = new_hour + 1
-            new_min = new_min - 60
+         
+    if new_min >=60:
+        new_hour = new_hour + 1
+        #print(new_hour)
+        new_min = new_min - 60
+            
+    #get the day
+    if new_hour >= 12:
+        new_hour = new_hour
+    else:
+        new_hour = new_hour + 12 #convert the new hour to 24hrs to calculate the date
+        days_hours = divmod(new_hour, 24)
+        day_count = day_count + days_hours[0]
+
+        i = index
+        j = i + day_count
+        #print(j)
+        if i <= j:
+            i = j
+            if i >= j:
+                i = i - len(week_days)
+        new_day = week_days[i]
+
 ######################################################## -> returns the current hour and minutes when set to AM
             
                 
@@ -97,6 +116,14 @@ def add_time():
         new_min = "0" + str(new_min)
     else:
         new_min = str(new_min)
+    
+
+    #check if time is in 24hrs and convert to 12hrs
+    if new_hour > 12:
+        new_hour=new_hour-12
+
+    elif new_hour <=12:
+        new_hour=new_hour
 
     #check and assign the appropriate period (AM or PM)
     if new_hour >= 0 :
@@ -108,11 +135,12 @@ def add_time():
 
 
     #check if time is in 24hrs and convert to 12hrs
-    if new_hour == 0 :
-        new_hour = new_hour + 12
-    if new_hour > 12 :
-        if new_hour < 24 :
-            new_hour = new_hour % 12
+    #if new_hour > 12:
+        #new_hour=new_hour-12
+
+    #elif new_hour <=12:
+        #new_hour=new_hour
+
     
     new_hour = str(new_hour)
  

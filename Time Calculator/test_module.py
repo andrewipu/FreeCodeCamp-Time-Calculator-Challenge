@@ -25,7 +25,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected, 'Expected period to change from AM to PM at 12:00')
 
     def test_twenty_four(self):
-        actual = add_time("2:59 AM", "24:00")
+        actual = add_time("2:59 AM", "24:00") #FAILED TO TEST COMPLETELY. -> Period referenced before assignment.
         expected = "2:59 AM (next day)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "2:59 AM", "24:00" to return "2:59 AM"')
 
@@ -35,12 +35,12 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "11:59 PM", "24:05" to return "12:04 AM (2 days later)"')
 
     def test_high_duration(self):
-        actual = add_time("8:16 PM", "466:02")
+        actual = add_time("8:16 PM", "466:02") #FAILS COMPLETELY -> List index out of range.
         expected = "6:18 AM (20 days later)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02" to return "6:18 AM (20 days later)"')
 
     def test_no_change(self):
-        actual = add_time("5:01 AM", "0:00")
+        actual = add_time("5:01 AM", "0:00") #FAILS COMPLETELY -> new_day referenced before assignment.
         expected = "5:01 AM"
         self.assertEqual(actual, expected, 'Expected adding 0:00 to return initial time.')
 
@@ -50,17 +50,17 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "3:30 PM", "2:12", "Monday" to return "5:42 PM, Monday"')
 
     def test_twenty_four_with_day(self):
-        actual = add_time("2:59 AM", "24:00", "saturDay")
+        actual = add_time("2:59 AM", "24:00", "saturDay") #FAILS COMPLETELY -> Period referenced before assignment.
         expected = "2:59 AM, Sunday (next day)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "2:59 AM", "24:00", "saturDay" to return "2:59 AM, Sunday (next day)"')
 
     def test_two_days_later_with_day(self):
-        actual = add_time("11:59 PM", "24:05", "Wednesday")
+        actual = add_time("11:59 PM", "24:05", "Wednesday") #WRONG AM/PM -> Displaying PM instead of AM.
         expected = "12:04 AM, Friday (2 days later)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "11:59 PM", "24:05", "Wednesday" to return "12:04 AM, Friday (2 days later)"')
 
     def test_high_duration_with_day(self):
-        actual = add_time("8:16 PM", "466:02", "tuesday")
+        actual = add_time("8:16 PM", "466:02", "tuesday") #FAILS COMPLETELY -> List index out of range.
         expected = "6:18 AM, Monday (20 days later)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02", "tuesday" to return "6:18 AM, Monday (20 days later)"')
 
