@@ -1,17 +1,35 @@
-#All tests in FCC's website pass.
+#------------------------------
+#add_time("3:00 PM", "3:10")
+# Returns: 6:10 PM
+
+#add_time("11:30 AM", "2:32", "Monday")
+# Returns: 2:02 PM, Monday
+
+#add_time("11:43 AM", "00:20")
+# Returns: 12:03 PM
+
+#add_time("10:10 PM", "3:30")
+# Returns: 1:40 AM (next day)
+
+#add_time("11:43 PM", "24:20", "tueSday")
+# Returns: 12:03 AM, Thursday (2 days later)
+
+#add_time("6:30 PM", "205:12")
+# Returns: 7:42 AM (9 days later)
 
 
 import re
+
 #start = ("2:59 AM", "24:00", "Monday") #Fails  completely ->from Unit Tests.
 #start = ("8:16 PM", "466:02", "Monday") #Fails completely ->from Unit Tests.
 #start = ("5:01 AM", "0:00", "Monday") #Fails Completely ->from Unit Tests.
 #start = ("2:59 AM", "24:00", "saturDay") #Fails Completely ->from Unit Tests.
 #start = ("11:59 PM", "24:05", "Wednesday") ##WRONG AM/PM -> Displaying PM instead of AM. ->from Unit Tests.
 #start = ("8:16 PM", "466:02", "Tuesday") #Fails Completely ->from Unit Tests. 
-start = ("2:59 AM", "24:00", "Tuesday")
-#new_hour = ''
-#new_hour_test = ''
+
+start = ("3:00 PM", "3:10", "Sunday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 def add_time():
     
     #Extract the "Start Hour"
@@ -41,8 +59,10 @@ def add_time():
 
         #add 12 if it is in PM format
     if AM_PM == 'PM':
-            start_hour = int(start_hour) + 12
+            #start_hour = int(start_hour) + 12 #Not necessary -> I will assume start_hour is in 24hr up til 24. After 24, I will need to subtract 24 from start_hour.
+            start_hour = int(start_hour)
             new_hour = int(start_hour) + int(dur_hours)
+
 ########################################################### -> returns start_hour and new_hour in 24hrs
 
             days_hours = divmod(new_hour, 24)
