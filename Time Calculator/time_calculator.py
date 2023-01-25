@@ -27,7 +27,7 @@ import re
 #start = ("11:59 PM", "24:05", "Wednesday") ##WRONG AM/PM -> Displaying PM instead of AM. ->from Unit Tests.
 #start = ("8:16 PM", "466:02", "Tuesday") #Fails Completely ->from Unit Tests. 
 
-start = ("8:16 PM", "466:02", "Tuesday")
+start = ("10:10 PM", "3:30", "Tuesday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 def add_time():
@@ -53,6 +53,7 @@ def add_time():
     #print(input_day)
 
     index = week_days.index(input_day) #index version of weekdays
+    #index = 
     #print("This is index: " + str(index))
     day_count = 0
 
@@ -70,14 +71,46 @@ def add_time():
             new_hour = days_hours[1] #Assuming this is in 24hrs.
 
             day_count = day_count + days_hours[0]
+
+            if day_count == 0:
+                new_day = input_day
+
+            #A count variable to reference the day_count
+            # Once the count variable and day_count variable are equal, end loop.
+            # Grab current list position hence grab the day 
+            # Each time the index iterates to an new day, increment the count variable.
+
+            count_var = 0
+            #i = input_day
             i = index
-            j = i + day_count
-            #print(j)
-            if i <= j:
-                i = j
-                if i >= j:
-                    i = i - len(week_days)
-            new_day = week_days[i]
+
+
+            while count_var < day_count:
+                #for i in weekdays
+                for i in range(index, len(week_days)):
+                    count_var += 1
+                    new_day = week_days[i]
+                    #print(new_day)
+                if i >= max(range(len(week_days))):
+                    i = week_days.index('Monday')
+                    new_day = week_days[i]
+                    #print(new_day)
+
+
+            #while count_var < day_count:
+
+                #for i in weekdays
+                #for i in range(index, len(week_days)):
+                    #count_var += 1
+                    #new_day = week_days[i]
+                    #print(new_day)
+                    #if i >= max(range(len(week_days))):
+                       # i = week_days.index('Monday')
+                        #new_day = week_days[i]
+                        #print(new_day)
+
+
+
 ######################################################## -> returns the current day, and hour.
             #new minutes
             new_min = int(start_min) + int(dur_minutes)
