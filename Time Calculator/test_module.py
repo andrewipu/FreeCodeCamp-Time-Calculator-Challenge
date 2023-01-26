@@ -35,7 +35,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "11:59 PM", "24:05" to return "12:04 AM (2 days later)"')
 
     def test_high_duration(self):
-        actual = add_time("8:16 PM", "466:02") #FAILS COMPLETELY -> List index out of range.
+        actual = add_time("8:16 PM", "466:02")
         expected = "6:18 AM (20 days later)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02" to return "6:18 AM (20 days later)"')
 
@@ -45,7 +45,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected, 'Expected adding 0:00 to return initial time.')
 
     def test_same_period_with_day(self):
-        actual = add_time("3:30 PM", "2:12", "Monday")
+        actual = add_time("3:30 PM", "2:12", "Monday") #-> Pass
         expected = "5:42 PM, Monday"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "3:30 PM", "2:12", "Monday" to return "5:42 PM, Monday"')
 
@@ -55,12 +55,12 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "2:59 AM", "24:00", "saturDay" to return "2:59 AM, Sunday (next day)"')
 
     def test_two_days_later_with_day(self):
-        actual = add_time("11:59 PM", "24:05", "Wednesday") #WRONG AM/PM -> Displaying PM instead of AM.
+        actual = add_time("11:59 PM", "24:05", "Wednesday") #-> Pass
         expected = "12:04 AM, Friday (2 days later)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "11:59 PM", "24:05", "Wednesday" to return "12:04 AM, Friday (2 days later)"')
 
     def test_high_duration_with_day(self):
-        actual = add_time("8:16 PM", "466:02", "tuesday") #FAILS COMPLETELY -> List index out of range.
+        actual = add_time("8:16 PM", "466:02", "tuesday") 
         expected = "6:18 AM, Monday (20 days later)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02", "tuesday" to return "6:18 AM, Monday (20 days later)"')
 

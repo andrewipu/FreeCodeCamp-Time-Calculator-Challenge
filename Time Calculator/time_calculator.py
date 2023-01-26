@@ -63,7 +63,6 @@ def add_time():
             start_hour = int(start_hour) + 12 #I am adding 12(hrs) to convert start_hour to 24hr clock system.
             new_hour = int(start_hour) + int(dur_hours)
 
-########################################################### -> returns start_hour and new_hour in 24hrs
 
             days_hours = divmod(new_hour, 24)
             #print(days_hours)
@@ -75,13 +74,8 @@ def add_time():
             if day_count == 0:
                 new_day = input_day
 
-            #A count variable to reference the day_count
-            # Once the count variable and day_count variable are equal, end loop.
-            # Grab current list position hence grab the day 
-            # Each time the index iterates to an new day, increment the count variable.
 
             count_var = 0
-            #i = input_day
             i = index
 
 
@@ -93,29 +87,11 @@ def add_time():
                     new_day = week_days[i]
                     #print(new_day)
                 
-                #print(new_day)
                     if i >= max(range(len(week_days))):
                         i = week_days.index('Monday')
                         index = i 
-                    #new_day = week_days[i]
-                    #print(new_day)
 
 
-            #while count_var < day_count:
-
-                #for i in weekdays
-                #for i in range(index, len(week_days)):
-                    #count_var += 1
-                    #new_day = week_days[i]
-                    #print(new_day)
-                    #if i >= max(range(len(week_days))):
-                       # i = week_days.index('Monday')
-                        #new_day = week_days[i]
-                        #print(new_day)
-
-
-
-######################################################## -> returns the current day, and hour.
             #new minutes
             new_min = int(start_min) + int(dur_minutes)
             if new_min >=60: #Should this be 59 instead? Because at 60, is when we increment an hour/minute/second.
@@ -124,7 +100,9 @@ def add_time():
                 if new_hour >= 24:
                     #new_day = week_days[i + 1]
                     new_day = week_days[i]
-######################################################## -> returns new minutes
+
+                    
+######################################################## -> if AM
 
     if AM_PM == 'AM':
         new_hour = int(start_hour) + int(dur_hours)
