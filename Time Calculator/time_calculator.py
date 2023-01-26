@@ -27,7 +27,7 @@ import re
 #start = ("11:59 PM", "24:05", "Wednesday") ##WRONG AM/PM -> Displaying PM instead of AM. ->from Unit Tests.
 #start = ("8:16 PM", "466:02", "Tuesday") #Fails Completely ->from Unit Tests. 
 
-start = ("10:10 PM", "3:30", "Tuesday")
+start = ("11:59 PM", "24:05", "Wednesday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 def add_time():
@@ -85,15 +85,19 @@ def add_time():
             i = index
 
 
-            while count_var < day_count:
-                #for i in weekdays
+            while count_var <= day_count:
                 for i in range(index, len(week_days)):
+                    if count_var > day_count:
+                        break
                     count_var += 1
                     new_day = week_days[i]
                     #print(new_day)
-                if i >= max(range(len(week_days))):
-                    i = week_days.index('Monday')
-                    new_day = week_days[i]
+                
+                #print(new_day)
+                    if i >= max(range(len(week_days))):
+                        i = week_days.index('Monday')
+                        index = i 
+                    #new_day = week_days[i]
                     #print(new_day)
 
 
@@ -118,7 +122,8 @@ def add_time():
                 new_hour = new_hour + 1
                 new_min = new_min - 60
                 if new_hour >= 24:
-                    new_day = week_days[i + 1]
+                    #new_day = week_days[i + 1]
+                    new_day = week_days[i]
 ######################################################## -> returns new minutes
 
     if AM_PM == 'AM':
