@@ -1,33 +1,13 @@
-#------------------------------
-#add_time("3:00 PM", "3:10")
-# Returns: 6:10 PM
-
-#add_time("11:30 AM", "2:32", "Monday")
-# Returns: 2:02 PM, Monday
-
-#add_time("11:43 AM", "00:20")
-# Returns: 12:03 PM
-
-#add_time("10:10 PM", "3:30")
-# Returns: 1:40 AM (next day)
-
-#add_time("11:43 PM", "24:20", "tueSday")
-# Returns: 12:03 AM, Thursday (2 days later)
-
-#add_time("6:30 PM", "205:12")
-# Returns: 7:42 AM (9 days later)
-
-
 import re
 
-#start = ("2:59 AM", "24:00", "Monday") #Fails  completely ->from Unit Tests.
-#start = ("8:16 PM", "466:02", "Monday") #Fails completely ->from Unit Tests.
-#start = ("5:01 AM", "0:00", "Monday") #Fails Completely ->from Unit Tests.
-#start = ("2:59 AM", "24:00", "saturDay") #Fails Completely ->from Unit Tests.
-#start = ("11:59 PM", "24:05", "Wednesday") ##WRONG AM/PM -> Displaying PM instead of AM. ->from Unit Tests.
-#start = ("8:16 PM", "466:02", "Tuesday") #Fails Completely ->from Unit Tests. 
+#start = ("2:59 AM", "24:00", "Monday") #PASS
+#start = ("8:16 PM", "466:02", "Monday") #PASS
+#start = ("5:01 AM", "0:00", "Monday") #PASS
+#start = ("2:59 AM", "24:00", "saturDay") #PASS
+#start = ("11:59 PM", "24:05", "Wednesday") #PASS
+#start = ("8:16 PM", "466:02", "Tuesday") #PASS
 
-start = ("11:59 PM", "24:05", "Wednesday")
+start = ("2:59 AM", "24:00", "tuesday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 def add_time():
@@ -107,30 +87,39 @@ def add_time():
     if AM_PM == 'AM':
         new_hour = int(start_hour) + int(dur_hours)
         new_min = int(start_min) + int(dur_minutes)
+
+        days_hours = divmod(new_hour, 24)
+            #print(days_hours)
+
+        new_hour = days_hours[1] #Assuming this is in 24hrs.
+
+        day_count = day_count + days_hours[0]
+
+        if day_count == 0:
+            new_day = input_day
+
+
+        count_var = 0
+        i = index
+
+
+        while count_var <= day_count:
+            for i in range(index, len(week_days)):
+                if count_var > day_count:
+                    break
+                count_var += 1
+                new_day = week_days[i]
+                #print(new_day)
+            
+                if i >= max(range(len(week_days))):
+                    i = week_days.index('Monday')
+                    index = i 
+
          
         if new_min >=60:
             new_hour = new_hour + 1
             #print(new_hour)
             new_min = new_min - 60
-                
-        #get the day
-        if new_hour >= 12:
-            new_hour = new_hour
-        else:
-            new_hour = new_hour + 12 #convert the new hour to 24hrs to calculate the date
-            days_hours = divmod(new_hour, 24)
-            day_count = day_count + days_hours[0]
-
-            i = index
-            j = i + day_count
-            #print(j)
-            if i <= j:
-                i = j
-                if i >= j:
-                    i = i - len(week_days)
-            new_day = week_days[i]
-
-######################################################## -> returns the current hour and minutes when set to AM
             
                 
 
