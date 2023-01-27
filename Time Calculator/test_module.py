@@ -25,7 +25,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected, 'Expected period to change from AM to PM at 12:00')
 
     def test_twenty_four(self):
-        actual = add_time("2:59 AM", "24:00")
+        actual = add_time("2:59 AM", "24:00") 
         expected = "2:59 AM (next day)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "2:59 AM", "24:00" to return "2:59 AM"')
 
@@ -60,7 +60,7 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "11:59 PM", "24:05", "Wednesday" to return "12:04 AM, Friday (2 days later)"')
 
     def test_high_duration_with_day(self):
-        actual = add_time("8:16 PM", "466:02", "tuesday")
+        actual = add_time("8:16 PM", "466:02", "tuesday") 
         expected = "6:18 AM, Monday (20 days later)"
         self.assertEqual(actual, expected, 'Expected calling "add_time()" with "8:16 PM", "466:02", "tuesday" to return "6:18 AM, Monday (20 days later)"')
 

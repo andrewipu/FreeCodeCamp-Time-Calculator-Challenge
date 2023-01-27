@@ -1,19 +1,15 @@
-#**Time & date is correct in FCC's example 1. I had to test with a day. The day was not incremented.
-#Complete FAIL in example 2.
-#FCC example 3 - Complete FAIL similar to above, seems it has an issue with AM->PM
-#**Pass in example 4.
-#**Date and time correct in example 5.
-#**Date and time correct in example 6.
-
-#AM to PM seems to be the issue.
-
-
 import re
-#start = ("11:43 PM", "24:20", "Sunday")
-start = ("11:43 PM", "24:20", "Tuesday")
-#new_hour = ''
-#new_hour_test = ''
+
+#start = ("2:59 AM", "24:00", "Monday") #PASS
+#start = ("8:16 PM", "466:02", "Monday") #PASS
+#start = ("5:01 AM", "0:00", "Monday") #PASS
+#start = ("2:59 AM", "24:00", "saturDay") #PASS
+#start = ("11:59 PM", "24:05", "Wednesday") #PASS
+#start = ("8:16 PM", "466:02", "Tuesday") #PASS
+
+start = ("2:59 AM", "24:00", "tuesday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 def add_time():
     
     #Extract the "Start Hour"
@@ -37,58 +33,93 @@ def add_time():
     #print(input_day)
 
     index = week_days.index(input_day) #index version of weekdays
+    #index = 
     #print("This is index: " + str(index))
     day_count = 0
 
 
         #add 12 if it is in PM format
     if AM_PM == 'PM':
-            start_hour = int(start_hour) + 12
+            start_hour = int(start_hour) + 12 #I am adding 12(hrs) to convert start_hour to 24hr clock system.
             new_hour = int(start_hour) + int(dur_hours)
-########################################################### -> returns start_hour and new_hour in 24hrs
+
 
             days_hours = divmod(new_hour, 24)
             #print(days_hours)
 
-            new_hour = days_hours[1]
-            #new_day = input_day <- I don't think this is necessary
+            new_hour = days_hours[1] #Assuming this is in 24hrs.
 
             day_count = day_count + days_hours[0]
+
+            if day_count == 0:
+                new_day = input_day
+
+
+            count_var = 0
             i = index
-            j = i + day_count
-            #print(j)
-            if i <= j:
-                i = j
-                if i >= j:
-                    i = i - len(week_days)
-            new_day = week_days[i]
-######################################################## -> returns the current day, and hour.
+
+
+            while count_var <= day_count:
+                for i in range(index, len(week_days)):
+                    if count_var > day_count:
+                        break
+                    count_var += 1
+                    new_day = week_days[i]
+                    #print(new_day)
+                
+                    if i >= max(range(len(week_days))):
+                        i = week_days.index('Monday')
+                        index = i 
+
+
             #new minutes
             new_min = int(start_min) + int(dur_minutes)
             if new_min >=60: #Should this be 59 instead? Because at 60, is when we increment an hour/minute/second.
                 new_hour = new_hour + 1
                 new_min = new_min - 60
-######################################################## -> returns new minutes
-            if new_hour >= 24:
-                #get days and hours
-                days_hours = divmod(new_hour, 24) #-> should give a tuple pair
-                day_count = day_count + days_hours[0]
-                i = index
-                j = i + day_count
-                if i <= j:
-                    i = j
-                    if i >= j:
-                        i = i - len(week_days)
-                new_day = week_days[i]
-                new_hour = days_hours[1]
-######################################################## -> returns the current day, and hour on condition that new_hour is > 24.
+                if new_hour >= 24:
+                    #new_day = week_days[i + 1]
+                    new_day = week_days[i]
+
+                    
+######################################################## -> if AM
+
     if AM_PM == 'AM':
         new_hour = int(start_hour) + int(dur_hours)
         new_min = int(start_min) + int(dur_minutes)
+
+        days_hours = divmod(new_hour, 24)
+            #print(days_hours)
+
+        new_hour = days_hours[1] #Assuming this is in 24hrs.
+
+        day_count = day_count + days_hours[0]
+
+        if day_count == 0:
+            new_day = input_day
+
+
+        count_var = 0
+        i = index
+
+
+        while count_var <= day_count:
+            for i in range(index, len(week_days)):
+                if count_var > day_count:
+                    break
+                count_var += 1
+                new_day = week_days[i]
+                #print(new_day)
+            
+                if i >= max(range(len(week_days))):
+                    i = week_days.index('Monday')
+                    index = i 
+
+         
         if new_min >=60:
             new_hour = new_hour + 1
+            #print(new_hour)
             new_min = new_min - 60
-######################################################## -> returns the current hour and minutes when set to AM
             
                 
 
@@ -97,22 +128,28 @@ def add_time():
         new_min = "0" + str(new_min)
     else:
         new_min = str(new_min)
+        
 
     #check and assign the appropriate period (AM or PM)
     if new_hour >= 0 :
         if new_hour < 12:
             period = 'AM'
+
     if new_hour >= 12 :
-        if new_hour <= 24 :
+        if new_hour <= 23 :
             period = 'PM'
+
+    if new_hour >= 24 :
+        period = 'AM'
 
 
     #check if time is in 24hrs and convert to 12hrs
-    if new_hour == 0 :
-        new_hour = new_hour + 12
-    if new_hour > 12 :
-        if new_hour < 24 :
-            new_hour = new_hour % 12
+    if new_hour > 12:
+        new_hour=new_hour-12
+
+    elif new_hour <=12:
+        new_hour=new_hour
+
     
     new_hour = str(new_hour)
  
