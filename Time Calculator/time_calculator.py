@@ -7,7 +7,7 @@ import re
 #start = ("11:59 PM", "24:05", "Wednesday") #PASS
 #start = ("8:16 PM", "466:02", "Tuesday") #PASS
 
-start = ("2:59 AM", "24:00", "Wednesday")
+start = ("8:16 PM", "466:02", "Wednesday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 def add_time():
@@ -43,14 +43,15 @@ def add_time():
             start_hour = int(start_hour) + 12 #I am adding 12(hrs) to convert start_hour to 24hr clock system.
             new_hour = int(start_hour) + int(dur_hours)
 
-
+            #calculate the number of days + current hours
             days_hours = divmod(new_hour, 24)
 
             new_hour = days_hours[1] #Assuming this is in 24hrs.
 
+            
             day_count = day_count + days_hours[0]
 
-            
+            #Get new day's index on the list
             new_day_index = (day_count + index) % len(week_days)
 
             new_day = week_days[new_day_index]
