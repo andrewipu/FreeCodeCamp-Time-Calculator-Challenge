@@ -7,7 +7,7 @@ import re
 #start = ("11:59 PM", "24:05", "Wednesday") #PASS
 #start = ("8:16 PM", "466:02", "Tuesday") #PASS
 
-start = ("8:16 PM", "466:02", "Wednesday")
+start = ("2:59 AM", "24:00", "Monday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 def add_time():
