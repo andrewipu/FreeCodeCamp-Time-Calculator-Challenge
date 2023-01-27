@@ -7,7 +7,7 @@ import re
 #start = ("11:59 PM", "24:05", "Wednesday") #PASS
 #start = ("8:16 PM", "466:02", "Tuesday") #PASS
 
-start = ("2:59 AM", "24:00", "tuesday")
+start = ("2:59 AM", "24:00", "Wednesday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 def add_time():
@@ -45,31 +45,15 @@ def add_time():
 
 
             days_hours = divmod(new_hour, 24)
-            #print(days_hours)
 
             new_hour = days_hours[1] #Assuming this is in 24hrs.
 
             day_count = day_count + days_hours[0]
 
-            if day_count == 0:
-                new_day = input_day
+            
+            new_day_index = (day_count + index) % len(week_days)
 
-
-            count_var = 0
-            i = index
-
-
-            while count_var <= day_count:
-                for i in range(index, len(week_days)):
-                    if count_var > day_count:
-                        break
-                    count_var += 1
-                    new_day = week_days[i]
-                    #print(new_day)
-                
-                    if i >= max(range(len(week_days))):
-                        i = week_days.index('Monday')
-                        index = i 
+            new_day = week_days[new_day_index]
 
 
             #new minutes
@@ -79,7 +63,8 @@ def add_time():
                 new_min = new_min - 60
                 if new_hour >= 24:
                     #new_day = week_days[i + 1]
-                    new_day = week_days[i]
+                    new_day_index = new_day_index + 1
+                    new_day = week_days[new_day_index]
 
                     
 ######################################################## -> if AM
@@ -95,25 +80,11 @@ def add_time():
 
         day_count = day_count + days_hours[0]
 
-        if day_count == 0:
-            new_day = input_day
+        new_day_index = (day_count + index) % len(week_days)
 
+        new_day = week_days[new_day_index]
 
-        count_var = 0
-        i = index
-
-
-        while count_var <= day_count:
-            for i in range(index, len(week_days)):
-                if count_var > day_count:
-                    break
-                count_var += 1
-                new_day = week_days[i]
-                #print(new_day)
-            
-                if i >= max(range(len(week_days))):
-                    i = week_days.index('Monday')
-                    index = i 
+        
 
          
         if new_min >=60:
@@ -160,7 +131,8 @@ def add_time():
 
 add_time()
 
-#redundant operations:
-    #- incrementing hour when minutes > 60
-    #- the condition that allows me to go beyond the end of list.
-    #- method used to grab day and hours
+#Pending:
+    #- Allow user to enter mix of big and small characters for the day. -> Use regex
+    #- Allow user to not include day in the calculation. -> Consider the try/catch in case there isn't a day specified by the user.
+    #- ADD FEATURE -> display the number of days later. -> use the divmod calculations
+    #- EFFICIENCY -> Get rid of repeated code sections. -> I'll see if I can replace them with functions.
