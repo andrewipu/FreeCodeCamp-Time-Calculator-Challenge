@@ -7,12 +7,12 @@ import re
 #start = ("11:59 PM", "24:05", "Wednesday") #PASS
 #start = ("8:16 PM", "466:02", "Tuesday") #PASS
 
-start = ("11:06 PM", "2:02")
+#start = ("8:16 PM", "466:02")
 
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-def add_time():
-#def add_time(start):
+#def add_time():
+def add_time(start):
     
     #Extract the "Start Hour"
     start_hour = re.findall('\d\S*(?=:)',str (start))[0]
@@ -33,7 +33,13 @@ def add_time():
     #Extract the index of the day input by the user
     #input_day = start[2]
     #index = week_days.index(input_day) #index version of weekdays
-    index = next((i for i, day in enumerate(week_days) if day.lower() == start[2].lower()), None)
+    try:
+
+        index = next((i for i, day in enumerate(week_days) if day.lower() == start[2].lower()), None)
+
+    except:
+        if len(start) < 3:
+            index = None
 
     day_count = 0
 
@@ -51,10 +57,17 @@ def add_time():
             
             day_count = day_count + days_hours[0]
 
+            try:
             #Get new day's index on the list
-            new_day_index = (day_count + index) % len(week_days)
+                new_day_index = (day_count + index) % len(week_days)
 
-            new_day = week_days[new_day_index]
+            except:
+                new_day_index = None
+
+            try:
+                new_day = week_days[new_day_index]
+            except:
+                new_day = None
 
 
             #new minutes
@@ -62,10 +75,13 @@ def add_time():
             if new_min >=60: #Should this be 59 instead? Because at 60, is when we increment an hour/minute/second.
                 new_hour = new_hour + 1
                 new_min = new_min - 60
-                if new_hour >= 24:
-                    #new_day = week_days[i + 1]
-                    new_day_index = new_day_index + 1
-                    new_day = week_days[new_day_index]
+                try:
+                    if new_hour >= 24:
+                        day_count = day_count + 1
+                        new_day_index = new_day_index + 1
+                        new_day = week_days[new_day_index]
+                except:
+                    pass
 
                     
 ######################################################## -> if AM
@@ -81,9 +97,17 @@ def add_time():
 
         day_count = day_count + days_hours[0]
 
-        new_day_index = (day_count + index) % len(week_days)
+        try:
+            #Get new day's index on the list
+            new_day_index = (day_count + index) % len(week_days)
 
-        new_day = week_days[new_day_index]
+        except:
+            new_day_index = None
+
+        try:
+            new_day = week_days[new_day_index]
+        except:
+            new_day = None
 
         
 
@@ -124,17 +148,32 @@ def add_time():
 
     
     new_hour = str(new_hour)
- 
-    #print new time in hh : mm format.
-    new_time = new_hour + ":" + new_min + " " + period + ", " + new_day
-    print(new_time)
+    
+    try:
+        #print new time in hh : mm format.
+        new_time = new_hour + ":" + new_min + " " + period + ", " + new_day
+        #print(new_time)
+    except:
+        if index == None:
+            if day_count == 1:
+                days_elapsed = " (next day)"
+            elif index == None:
+                no_of_days_elapsed = day_count
+                days_elapsed = " (" + str(no_of_days_elapsed) + " days later" + ")"
+            new_time = new_hour + ":" + new_min + " " + period + days_elapsed
+            #print(new_time)
+    #except:
+        #if index == None:
+            #new_time = new_hour + ":" + new_min + " " + period
+            #print(new_time)
 
 
-add_time()
-    #return new_time
+#add_time()
+    return new_time
 
 #Pending:
-    #- Allow user to enter mix of big and small characters for the day. -> FIXED
-    #- Allow user to not include day in the calculation. -> Consider the try/catch in case there isn't a day specified by the user.
+    #- Allow user to enter mix of big and small characters for the day. -> DONE
+    #- Allow user to not include day in the calculation. -> DONE
     #- ADD FEATURE -> display the number of days later. -> use the divmod calculations
+    # - FIX UNIT TESTS -> This is because the add_time function takes in two mandatory parameters. I'm gonna need a parameter for the start-time, duration, and day of the week.
     #- EFFICIENCY -> Get rid of repeated code sections. -> I'll see if I can replace them with functions.
