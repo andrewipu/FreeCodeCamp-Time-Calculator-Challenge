@@ -1,19 +1,10 @@
 import re
 
-#start = ("2:59 AM", "24:00", "Monday") #PASS
-#start = ("8:16 PM", "466:02", "Monday") #PASS
-#start = ("5:01 AM", "0:00", "Monday") #PASS
-#start = ("2:59 AM", "24:00", "saturDay") #PASS
-#start = ("11:59 PM", "24:05", "Wednesday") #PASS
-#start = ("8:16 PM", "466:02", "Tuesday") #PASS
-
-#start = ("8:16 PM", "466:02")
-
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 #def add_time():
-def add_time(start):
-    
+def add_time(start, duration, days=None): #<- need three parameters
+
     #Extract the "Start Hour"
     start_hour = re.findall('\d\S*(?=:)',str (start))[0]
 
@@ -25,20 +16,20 @@ def add_time(start):
 
     #Extract duration_hours
     #\s\d+(?=:) <- works so far...
-    dur_hours = re.findall('\d\S*(?=:)', str (start))[1]
+    dur_hours = re.findall('\d\S*(?=:)', str (duration))[0]
 
     #Extract dur_minutes
-    dur_minutes = re.findall('(?=\d+)\d+', str (start))[3]
+    dur_minutes = re.findall('(?=\d+)\d+', str (duration))[1]
 
     #Extract the index of the day input by the user
     #input_day = start[2]
     #index = week_days.index(input_day) #index version of weekdays
     try:
 
-        index = next((i for i, day in enumerate(week_days) if day.lower() == start[2].lower()), None)
+        index = next((i for i, day in enumerate(week_days) if day.lower() == days.lower()), None)
 
     except:
-        if len(start) < 3:
+        if days == None:
             index = None
 
     day_count = 0
@@ -157,23 +148,23 @@ def add_time(start):
         if index == None:
             if day_count == 1:
                 days_elapsed = " (next day)"
-            elif index == None:
+                new_time = new_hour + ":" + new_min + " " + period + days_elapsed
+            elif day_count ==0:
+                #new_time = new_hour + ":" + new_min + " " + period + days_elapsed
+                new_time = new_hour + ":" + new_min + " " + period
+            else:
                 no_of_days_elapsed = day_count
                 days_elapsed = " (" + str(no_of_days_elapsed) + " days later" + ")"
-            new_time = new_hour + ":" + new_min + " " + period + days_elapsed
-            #print(new_time)
-    #except:
-        #if index == None:
-            #new_time = new_hour + ":" + new_min + " " + period
+                new_time = new_hour + ":" + new_min + " " + period + days_elapsed
             #print(new_time)
 
 
-#add_time()
+
     return new_time
 
 #Pending:
     #- Allow user to enter mix of big and small characters for the day. -> DONE
     #- Allow user to not include day in the calculation. -> DONE
-    #- ADD FEATURE -> display the number of days later. -> use the divmod calculations
-    # - FIX UNIT TESTS -> This is because the add_time function takes in two mandatory parameters. I'm gonna need a parameter for the start-time, duration, and day of the week.
+    #- ADD FEATURE -> display the number of days later. -> use the divmod calculations 
+    # - FIX UNIT TESTS -> DONE
     #- EFFICIENCY -> Get rid of repeated code sections. -> I'll see if I can replace them with functions.
