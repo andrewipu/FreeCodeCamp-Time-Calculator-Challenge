@@ -7,10 +7,12 @@ import re
 #start = ("11:59 PM", "24:05", "Wednesday") #PASS
 #start = ("8:16 PM", "466:02", "Tuesday") #PASS
 
-start = ("2:59 PM", "24:00", "saturDay")
+start = ("11:06 PM", "2:02")
+
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 def add_time():
+#def add_time(start):
     
     #Extract the "Start Hour"
     start_hour = re.findall('\d\S*(?=:)',str (start))[0]
@@ -28,11 +30,10 @@ def add_time():
     #Extract dur_minutes
     dur_minutes = re.findall('(?=\d+)\d+', str (start))[3]
 
-    #Extract day
+    #Extract the index of the day input by the user
     #input_day = start[2]
     #index = week_days.index(input_day) #index version of weekdays
     index = next((i for i, day in enumerate(week_days) if day.lower() == start[2].lower()), None)
-
 
     day_count = 0
 
@@ -130,6 +131,7 @@ def add_time():
 
 
 add_time()
+    #return new_time
 
 #Pending:
     #- Allow user to enter mix of big and small characters for the day. -> FIXED
