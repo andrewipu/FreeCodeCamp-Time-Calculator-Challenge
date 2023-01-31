@@ -1,2 +1,2 @@
 # FreeCodeCamp-Time-Calculator-Challenge
-Program that calculates, formats and outputs the latest time/day.
+Python program that calculates, formats and outputs the latest time/day.
