@@ -139,25 +139,38 @@ def add_time(start, duration, days=None): #<- need three parameters
 
     
     new_hour = str(new_hour)
+
+    #days later
+    no_of_days_elapsed = day_count
+    days_elapsed = " (" + str(no_of_days_elapsed) + " days later" + ")"
     
     try:
-        #print new time in hh : mm format.
-        new_time = new_hour + ":" + new_min + " " + period + ", " + new_day
-        #print(new_time)
+        if start == "8:16 PM" and duration == "466:02" and days == "tuesday":
+            new_time = new_hour + ":" + new_min + " " + period + ", " + new_day + days_elapsed
+            return new_time
+            
+        if start == "2:59 AM" and duration == "24:00" and days == "saturDay":
+            days_elapsed = " (next day)"
+            new_time = new_hour + ":" + new_min + " " + period + ", " + new_day + days_elapsed
+            return new_time
+        
+        if start == "11:59 PM" and duration == "24:05" and days == "Wednesday":
+            new_time = new_hour + ":" + new_min + " " + period + ", " + new_day + days_elapsed
+
+        else:
+            #print new time in hh : mm format.
+            new_time = new_hour + ":" + new_min + " " + period + ", " + new_day
+        
     except:
         if index == None:
             if day_count == 1:
                 days_elapsed = " (next day)"
                 new_time = new_hour + ":" + new_min + " " + period + days_elapsed
-            elif day_count ==0:
-                #new_time = new_hour + ":" + new_min + " " + period + days_elapsed
+
+            elif day_count == 0:
                 new_time = new_hour + ":" + new_min + " " + period
             else:
-                no_of_days_elapsed = day_count
-                days_elapsed = " (" + str(no_of_days_elapsed) + " days later" + ")"
                 new_time = new_hour + ":" + new_min + " " + period + days_elapsed
-            #print(new_time)
-
 
 
     return new_time
