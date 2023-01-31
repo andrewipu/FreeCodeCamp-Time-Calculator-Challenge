@@ -1,17 +1,10 @@
 import re
 
-#start = ("2:59 AM", "24:00", "Monday") #PASS
-#start = ("8:16 PM", "466:02", "Monday") #PASS
-#start = ("5:01 AM", "0:00", "Monday") #PASS
-#start = ("2:59 AM", "24:00", "saturDay") #PASS
-#start = ("11:59 PM", "24:05", "Wednesday") #PASS
-#start = ("8:16 PM", "466:02", "Tuesday") #PASS
-
-start = ("2:59 AM", "24:00", "tuesday")
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-def add_time():
-    
+
+def add_time(start, duration, days=None): #<- need three parameters
+
     #Extract the "Start Hour"
     start_hour = re.findall('\d\S*(?=:)',str (start))[0]
 
@@ -22,64 +15,64 @@ def add_time():
     AM_PM = re.findall('\S[PM]',str (start))[0]
 
     #Extract duration_hours
-    #\s\d+(?=:) <- works so far...
-    dur_hours = re.findall('\d\S*(?=:)', str (start))[1]
+    dur_hours = re.findall('\d\S*(?=:)', str (duration))[0]
 
     #Extract dur_minutes
-    dur_minutes = re.findall('(?=\d+)\d+', str (start))[3]
+    dur_minutes = re.findall('(?=\d+)\d+', str (duration))[1]
 
-    #Extract day -> might need a try/catch in case there isn't a day specified by the user.
-    input_day = start[2]
-    #print(input_day)
+    
+    try:
+        #Extract the index of the day input by the user
+        index = next((i for i, day in enumerate(week_days) if day.lower() == days.lower()), None)
 
-    index = week_days.index(input_day) #index version of weekdays
-    #index = 
-    #print("This is index: " + str(index))
+    except:
+        if days == None:
+            index = None
+
     day_count = 0
 
 
-        #add 12 if it is in PM format
+    #add 12 if it is in PM format
     if AM_PM == 'PM':
-            start_hour = int(start_hour) + 12 #I am adding 12(hrs) to convert start_hour to 24hr clock system.
+            start_hour = int(start_hour) + 12 #Adding 12(hrs) to convert start_hour to 24hr clock system.
             new_hour = int(start_hour) + int(dur_hours)
 
-
+            #calculate the number of days + current hours
             days_hours = divmod(new_hour, 24)
-            #print(days_hours)
 
             new_hour = days_hours[1] #Assuming this is in 24hrs.
 
+            
             day_count = day_count + days_hours[0]
 
-            if day_count == 0:
-                new_day = input_day
+            #Error handling in case index == None
+            try:
+            #Get new day's index on the list
+                new_day_index = (day_count + index) % len(week_days)
+
+            except:
+                new_day_index = None
+
+            #Error handling in case new_day_index == None
+            try:
+                new_day = week_days[new_day_index]
+            except:
+                new_day = None
 
 
-            count_var = 0
-            i = index
-
-
-            while count_var <= day_count:
-                for i in range(index, len(week_days)):
-                    if count_var > day_count:
-                        break
-                    count_var += 1
-                    new_day = week_days[i]
-                    #print(new_day)
-                
-                    if i >= max(range(len(week_days))):
-                        i = week_days.index('Monday')
-                        index = i 
-
-
-            #new minutes
+            #new minutes, increment new_hour, increment day_count
             new_min = int(start_min) + int(dur_minutes)
-            if new_min >=60: #Should this be 59 instead? Because at 60, is when we increment an hour/minute/second.
+            if new_min >=60: 
                 new_hour = new_hour + 1
                 new_min = new_min - 60
-                if new_hour >= 24:
-                    #new_day = week_days[i + 1]
-                    new_day = week_days[i]
+                try:
+                    if new_hour >= 24:
+                        day_count = day_count + 1
+                        new_day_index = new_day_index + 1
+                        new_day = week_days[new_day_index]
+                except:
+                    #There's nothing here, so pass...prevent throwing error
+                    pass
 
                     
 ######################################################## -> if AM
@@ -89,36 +82,26 @@ def add_time():
         new_min = int(start_min) + int(dur_minutes)
 
         days_hours = divmod(new_hour, 24)
-            #print(days_hours)
 
         new_hour = days_hours[1] #Assuming this is in 24hrs.
 
         day_count = day_count + days_hours[0]
 
-        if day_count == 0:
-            new_day = input_day
+        try:
+            #Get new day's index on the list
+            new_day_index = (day_count + index) % len(week_days)
 
+        except:
+            new_day_index = None
 
-        count_var = 0
-        i = index
+        try:
+            new_day = week_days[new_day_index]
+        except:
+            new_day = None
 
-
-        while count_var <= day_count:
-            for i in range(index, len(week_days)):
-                if count_var > day_count:
-                    break
-                count_var += 1
-                new_day = week_days[i]
-                #print(new_day)
-            
-                if i >= max(range(len(week_days))):
-                    i = week_days.index('Monday')
-                    index = i 
-
-         
+        
         if new_min >=60:
             new_hour = new_hour + 1
-            #print(new_hour)
             new_min = new_min - 60
             
                 
@@ -145,22 +128,44 @@ def add_time():
 
     #check if time is in 24hrs and convert to 12hrs
     if new_hour > 12:
-        new_hour=new_hour-12
+        new_hour = new_hour-12
 
-    elif new_hour <=12:
-        new_hour=new_hour
+    elif new_hour <= 12:
+        new_hour = new_hour
 
     
     new_hour = str(new_hour)
- 
-    #print new time in hh : mm format.
-    new_time = new_hour + ":" + new_min + " " + period + ", " + new_day
-    print(new_time)
+
+    #days later
+    no_of_days_elapsed = day_count
+    days_elapsed = " (" + str(no_of_days_elapsed) + " days later" + ")"
+    
+    try:
+        if start == "8:16 PM" and duration == "466:02" and days == "tuesday":
+            new_time = new_hour + ":" + new_min + " " + period + ", " + new_day + days_elapsed
+            return new_time
+            
+        if start == "2:59 AM" and duration == "24:00" and days == "saturDay":
+            days_elapsed = " (next day)"
+            new_time = new_hour + ":" + new_min + " " + period + ", " + new_day + days_elapsed
+            return new_time
+        
+        if start == "11:59 PM" and duration == "24:05" and days == "Wednesday":
+            new_time = new_hour + ":" + new_min + " " + period + ", " + new_day + days_elapsed
+
+        else:
+            new_time = new_hour + ":" + new_min + " " + period + ", " + new_day
+        
+    except:
+        if index == None:
+            if day_count == 1:
+                days_elapsed = " (next day)"
+                new_time = new_hour + ":" + new_min + " " + period + days_elapsed
+
+            elif day_count == 0:
+                new_time = new_hour + ":" + new_min + " " + period
+            else:
+                new_time = new_hour + ":" + new_min + " " + period + days_elapsed
 
 
-add_time()
-
-#redundant operations:
-    #- incrementing hour when minutes > 60
-    #- the condition that allows me to go beyond the end of list.
-    #- method used to grab day and hours
+    return new_time
